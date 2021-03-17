@@ -1,4 +1,4 @@
-##Para levantar esto y usar esto
+## Para levantar esto y usar esto
 
 1. npm start serve
 2. Va a aparecer un input pidiendo un nick
