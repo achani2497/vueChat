@@ -21,8 +21,8 @@
                         <div class="column is-6">
                             <div class="field has-addons">
                                 <div class="control is-expanded">
-                                    <input v-model="nick" class="input is-medium" type="text"
-                                        placeholder="Ingrese su nick">
+                                    <input v-model="username" class="input is-medium" type="text"
+                                        placeholder="Ingrese su nombre de usuario" @keyup.enter="signIn">
                                 </div>
                                 <div class="control">
                                     <a @click="signIn" class="button is-info is-medium">
@@ -35,9 +35,9 @@
                 </template>
                 <template v-else>
                     <div v-if="messages.length" class="chat-container">
-                        <div v-for="item in messages" :class="{ 'has-text-right': nick === item.nick }">
-                            <div class="box chat-message" :class="{ 'me': nick === item.nick }">
-                                <span class="has-text-weight-bold">{{ item.nick }}</span> - {{ item.message }}
+                        <div v-for="item in messages" :class="{ 'has-text-right': username === item.username }">
+                            <div class="box chat-message" :class="{ 'me': username === item.username }">
+                                <span class="has-text-weight-bold">{{ item.username }}</span> - {{ item.message }}
                                 <span
                                     class="is-italic has-text-grey-light is-size-7">{{ new Date(item.date).toLocaleDateString() }}</span>
                             </div>
@@ -45,12 +45,15 @@
                     </div>
 
                     <div class="field has-addons">
+                        <div v-if="typingMessage !== ''">
+                            {{typingMessage}}
+                        </div>
                         <div class="control is-expanded">
                             <input v-model="message" class="input is-medium" type="text"
-                                placeholder="Ingrese el mensaje">
+                                placeholder="Ingrese el mensaje" @input="informTyping" @keyup.enter="send">
                         </div>
                         <div class="control">
-                            <a @click="send" class="button is-info is-medium">
+                            <a class="button is-info is-medium">
                                 Enviar
                             </a>
                         </div>
@@ -61,7 +64,7 @@
         </div>
         <footer v-if="step === 'chat'" class="hero-foot">
             <div class="container section has-text-centered">
-                <p>Conectado como <b>{{ nick }}</b></p>
+                <p>Conectado como <b>{{ username }}</b></p>
             </div>
         </footer>
     </section>
