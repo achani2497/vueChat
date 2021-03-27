@@ -3,14 +3,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!--Añadimos los estilos de la carpeta public y el cdn de bootstrap-->
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <title>Chat con Vuejs</title>
 </head>
 <body>
    
-    <section id="app" class="hero is-fullheight">
+    <!-- <section id="app" class="hero is-fullheight bkg-1">
         <div class="hero-body">
             <div class="container">
                 <h1 class="title">Chat</h1>
@@ -67,8 +65,38 @@
                 <p>Conectado como <b>{{ username }}</b></p>
             </div>
         </footer>
-    </section>
-
+    </section> -->
+    <div id="app">
+        <div v-if="step === 'nick'" class="centered-flex-container bkg-1">
+            <div class="info glass">
+                <div class="titles">
+                    <h1>Bienvenidx a mi chat!</h1>
+                    <h2>Por favor, ingresá un nick para poder empezar a usar el chat</h2>
+                </div>
+                <input v-model="username" class="" type="text" placeholder="Ingrese su nick" @keyup.enter="signIn">
+                <button type="button" class="btn-grad">Entrar!</button>
+            </div>
+        </div>
+        <div v-else class="container bkg-2">
+            <div v-if="messages.length" id="chat-container" class="chat glass">
+                <div v-for="item in messages" class="message-container" :class="{'has-text-right': username === item.username }">
+                    <div class="message glass">
+                        <span class="message-info">
+                            {{ item.username === username? 'Yo' : item.username }} - {{ new Date(item.date).toLocaleDateString() }} 
+                        </span>
+                        <span class="message-content">{{ item.message }}</span>
+                    </div>
+                </div>
+                <div v-if="typingMessage !== ''" class="typing">
+                    {{typingMessage}}
+                </div>
+            </div>
+            <div class="chat-input glass">
+                <input v-model="message" type="text" placeholder="Ingrese el mensaje" @input="informTyping" @keyup.enter="send">
+            </div>
+        </div>
+    </div>
+    
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     <script src="./chat.js"></script>

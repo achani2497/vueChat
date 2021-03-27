@@ -7,14 +7,14 @@ new Vue({
         message:'',
         messages:[],
         step: 'nick',
-        typingMessage:''
+        typingMessage:'',
+        chatContainer:''
     },
     methods:{
         send:function (){
             if(this.typing){
                 this.typing = false
             }
-            console.log('1 - send')
             this.sendMessage(this.message)
             this.message = ''
         },
@@ -39,7 +39,6 @@ new Vue({
             })
         },
         sendMessage: function(message){
-            console.log('2 - Send Message')
             socket.emit('new-message',{
                 username: this.username,
                 message: message,
@@ -48,8 +47,7 @@ new Vue({
         },
         isTyping: function(username){
             this.typingMessage = username+' está escribiendo . . .'
-        },
-
+        }
     },
     mounted: function(){
         socket.on('new-message', (msg) => {
@@ -67,14 +65,8 @@ new Vue({
         })
         socket.on('is-typing', (user) => {
             if(this.username !== user.username){
-                console.log(user.username+' está escribiendo')
                 this.isTyping(user.username)
             }
         })
-
-        setTimeout(() => {
-            const chatContainer = document.getElementById('chat-container')
-            chatContainer.scrollTop = chatContainer.scrollHeight
-        }, 10)
     }
 })

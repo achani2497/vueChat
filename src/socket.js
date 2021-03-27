@@ -4,8 +4,6 @@ module.exports = (http) => {
 
     io.on('connection', (socket) => {
 
-        console.log('Usuario conectado');
-
         //* Cuando se envia un nuevo msg
         socket.on('new-message', (msg) => { //Con esto establezco el nombre del evento que quiero que se escuche
             io.emit('new-message', msg) //Con esto hago que todxs lxs usuarixs que esten conectadxs se enteren de que hay un nuevo mensaje
@@ -16,21 +14,6 @@ module.exports = (http) => {
             console.log('Usuario desconectado')
         })
 
-        //* Cuando entra un nuevo usuario al chat
-        socket.on('add-user', (username) => {
-            socket.username = username
-            ++numUsers
-            addedUser = true
-            socket.emit('login', {
-                numUsers: numUsers
-            })
-
-            //? Informo qué usuario se unió
-            socket.broadcast.emit('user-joined', {
-                username: socket.username,
-                numUsers: numUsers
-            })
-        })
 
         //* Cuando alguien está escribiendo
         socket.on('typing', (msg) => {
